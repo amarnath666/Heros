@@ -145,20 +145,33 @@ export const ComponentCard = ({
   );
 };
 
-const ComponentsGrid = () => {
+interface ComponentsGridProps {
+  title?: string;
+  description?: string;
+  category?: string;
+}
+
+const ComponentsGrid = ({
+  title = "Components",
+  description = "A collection of interactive and animated components for your applications.",
+  category,
+}: ComponentsGridProps) => {
+  const components = category
+    ? componentCards.filter((component) => component.category === category)
+    : componentCards;
+
   return (
     <div className="flex flex-col w-full pb-20 ">
       <h1 className="text-[2rem]/10 md:text-[2.5rem]/10 font-semibold tracking-tight text-black dark:text-white mb-3">
-        Components
+        {title}
       </h1>
       <p className="text-base/5 md:text-lg/7 text-text-secondary tracking-tight mb-5 md:mb-10 max-w-[750px]">
-        A collection of interactive and animated components for your
-        applications.
+        {description}
       </p>
 
       {/* Component Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-7">
-        {componentCards.map((component) => (
+        {components.map((component) => (
           <ComponentCard key={component.link} component={component} />
         ))}
       </div>

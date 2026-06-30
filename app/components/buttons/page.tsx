@@ -1,5 +1,5 @@
-import { buildPageMetadata, createCollectionPageJsonLd } from "@/lib/seo";
-import ButtonsGrid from "./buttons-grid";
+import { buildPageMetadata } from "@/lib/seo";
+import CategoryPage from "../category-page";
 
 export const metadata = buildPageMetadata({
   title: "Buttons",
@@ -10,20 +10,12 @@ export const metadata = buildPageMetadata({
 });
 
 export default function ButtonsPage() {
-  const jsonLd = createCollectionPageJsonLd({
-    title: "Chamaac UI Buttons",
-    description:
-      "A collection of interactive and animated buttons for your applications.",
-    pathname: "/components/buttons",
-  });
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <ButtonsGrid />
-    </>
+    <CategoryPage
+      title="Buttons"
+      description="A collection of interactive and animated buttons for your applications."
+      category="Buttons"
+      pathname="/components/buttons"
+    />
   );
 }

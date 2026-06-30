@@ -31,12 +31,12 @@ export const Footer = () => {
   const categories = Array.from(
     new Set(
       sidebarData
-        .filter(
-          (item) =>
-            item.category &&
-            !["Overview", "Animated Icons"].includes(item.category)
-        )
         .map((item) => item.category)
+        .filter(
+          (category): category is string =>
+            typeof category === "string" &&
+            !["Overview", "Animated Icons"].includes(category)
+        )
     )
   );
 
@@ -149,7 +149,7 @@ export const Footer = () => {
                 {categories.map((category) => (
                   <li key={category}>
                     <Link
-                      href={`/components`}
+                      href={`/components/${category.toLowerCase().replaceAll(" ", "-")}`}
                       className="text-text-tertiary text-[12px] md:text-sm  font-medium hover:text-text-primary uppercase tracking-[0.02em]"
                     >
                       {category}
