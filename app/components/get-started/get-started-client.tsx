@@ -9,6 +9,7 @@ import PackageManagerSelector, {
 } from "@/components/ui/package-manager-selector";
 import CopyButton from "@/components/ui/copy-button";
 import CodeBlock from "@/components/ui/code-block";
+import { captureEvent, type CopyAnalytics } from "@/lib/analytics";
 
 type InstallMethod = "cli" | "manual" | "mcp";
 
@@ -60,6 +61,7 @@ interface CommandBlockProps {
   layoutId?: string;
   /** Plain text label shown on the left when no PM selector */
   label?: string;
+  copyAnalytics: CopyAnalytics;
 }
 
 function CommandBlock({
@@ -68,6 +70,7 @@ function CommandBlock({
   onPmChange,
   layoutId,
   label,
+  copyAnalytics,
 }: CommandBlockProps) {
   return (
     <div className="border border-white/15 rounded-[16px] overflow-hidden">
@@ -85,7 +88,7 @@ function CommandBlock({
         ) : (
           <div />
         )}
-        <CopyButton text={command} />
+        <CopyButton text={command} analytics={copyAnalytics} />
       </div>
       <div className="bg-[#0d0d0d] p-4">
         <code className="text-sm font-mono text-neutral-200">{command}</code>
@@ -117,6 +120,24 @@ export default function GetStartedClient() {
   const addCommand = `${getPmPrefix(activePm)} shadcn@latest add https://chamaac.com/r/<Component>.json`;
   const mcpCommand = `${getPmPrefix(activePm)} shadcn@latest mcp init`;
 
+  const handleInstallMethodChange = (value: string) => {
+    const method = value as InstallMethod;
+    setInstallMethod(method);
+    captureEvent("installation_method_selected", {
+      method,
+      surface: "get_started",
+    });
+  };
+
+  const handlePackageManagerChange = (packageManager: PackageManager) => {
+    setActivePm(packageManager);
+    captureEvent("package_manager_selected", {
+      package_manager: packageManager,
+      installation_method: installMethod,
+      surface: "get_started",
+    });
+  };
+
   return (
     <div className="relative min-h-screen w-full bg-bg-primary overflow-x-hidden flex flex-col">
       <main className="flex-1">
@@ -140,7 +161,7 @@ export default function GetStartedClient() {
               <AnimatedTabs
                 layoutId="getStartedInstallMethod"
                 activeTab={installMethod}
-                onTabChange={(val) => setInstallMethod(val as InstallMethod)}
+                onTabChange={handleInstallMethodChange}
                 tabs={[
                   { label: "CLI", value: "cli" },
                   { label: "Manual", value: "manual" },
@@ -159,8 +180,14 @@ export default function GetStartedClient() {
                       <CommandBlock
                         command={cliCommand}
                         activePm={activePm}
-                        onPmChange={setActivePm}
+                        onPmChange={handlePackageManagerChange}
                         layoutId="getStartedCliPm"
+                        copyAnalytics={{
+                          event: "cli_command_copied",
+                          package_manager: activePm,
+                          command_purpose: "initialize_shadcn",
+                          surface: "get_started",
+                        }}
                       />
                     </div>
 
@@ -175,6 +202,12 @@ export default function GetStartedClient() {
                       <CommandBlock
                         command={addCommand}
                         label="shadcn@latest add"
+                        copyAnalytics={{
+                          event: "cli_command_copied",
+                          package_manager: activePm,
+                          command_purpose: "add_component_template",
+                          surface: "get_started",
+                        }}
                       />
                     </div>
                   </div>
@@ -197,8 +230,14 @@ export default function GetStartedClient() {
                       <CommandBlock
                         command={manualCommand}
                         activePm={activePm}
-                        onPmChange={setActivePm}
+                        onPmChange={handlePackageManagerChange}
                         layoutId="getStartedManualPm"
+                        copyAnalytics={{
+                          event: "dependency_command_copied",
+                          package_manager: activePm,
+                          command_purpose: "install_base_dependencies",
+                          surface: "get_started",
+                        }}
                       />
                     </div>
 
@@ -217,6 +256,11 @@ export default function GetStartedClient() {
                         code={utilsCode}
                         filename="lib/utils.ts"
                         language="tsx"
+                        copyAnalytics={{
+                          event: "configuration_copied",
+                          surface: "get_started",
+                          filename: "lib/utils.ts",
+                        }}
                       />
                     </div>
 
@@ -242,6 +286,11 @@ export default function GetStartedClient() {
                         code={usageCode}
                         filename="app/page.tsx"
                         language="tsx"
+                        copyAnalytics={{
+                          event: "code_snippet_copied",
+                          surface: "get_started",
+                          filename: "app/page.tsx",
+                        }}
                       />
                     </div>
                   </div>
@@ -270,8 +319,14 @@ export default function GetStartedClient() {
                       <CommandBlock
                         command={mcpCommand}
                         activePm={activePm}
-                        onPmChange={setActivePm}
+                        onPmChange={handlePackageManagerChange}
                         layoutId="getStartedMcpPm"
+                        copyAnalytics={{
+                          event: "cli_command_copied",
+                          package_manager: activePm,
+                          command_purpose: "initialize_mcp",
+                          surface: "get_started",
+                        }}
                       />
                     </div>
 
@@ -290,6 +345,11 @@ export default function GetStartedClient() {
                         code={mcpRegistryCode}
                         filename="components.json"
                         language="json"
+                        copyAnalytics={{
+                          event: "configuration_copied",
+                          surface: "get_started",
+                          filename: "components.json",
+                        }}
                       />
                     </div>
 

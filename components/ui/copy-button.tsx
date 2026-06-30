@@ -3,26 +3,43 @@
 import { useState } from "react";
 import { IconCopy, IconCheck } from "@tabler/icons-react";
 import { CopyProps } from "@/lib/types";
+import { captureCopyFailure, captureEvent } from "@/lib/analytics";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const CopyButton = ({ text }: CopyProps) => {
+const CopyButton = ({ text, analytics }: CopyProps) => {
   const [copy, setCopy] = useState<boolean>(false);
 
   // handle copy
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(text);
-    setCopy(true);
-    setTimeout(() => {
-      setCopy(false);
-    }, 2000);
+    const copyAnalytics =
+      analytics ??
+      ({
+        event: "code_snippet_copied",
+        surface: "generic_copy_button",
+      } as const);
+
+    try {
+      await navigator.clipboard.writeText(text);
+      const { event, ...properties } = copyAnalytics;
+      captureEvent(event, properties);
+      setCopy(true);
+      setTimeout(() => {
+        setCopy(false);
+      }, 2000);
+    } catch {
+      const { event, ...properties } = copyAnalytics;
+      captureCopyFailure(event, properties);
+    }
   };
 
   return (
-    <div
+    <button
+      type="button"
+      aria-label={copy ? "Copied" : "Copy to clipboard"}
       onClick={handleCopy}
       className="h-[30px] w-[30px] flex items-center justify-center bg-neutral-900 hover:bg-neutral-800 cursor-pointer rounded-md transition shadow-sm border border-white/15"
     >
@@ -38,7 +55,7 @@ const CopyButton = ({ text }: CopyProps) => {
           </TooltipContent>
         </Tooltip>
       )}
-    </div>
+    </button>
   );
 };
 

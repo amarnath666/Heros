@@ -11,6 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { IconTypes } from "./types";
+import { captureCopyFailure, captureEvent } from "@/lib/analytics";
 
 interface IconCardProps {
   icon: IconTypes;
@@ -34,11 +35,19 @@ export default function IconCard({ icon, isHoveredMode }: IconCardProps) {
       const data = await response.json();
       if (data.files && data.files[0]?.content) {
         await navigator.clipboard.writeText(data.files[0].content);
+        captureEvent("component_code_copied", {
+          component_name: icon.slug,
+          surface: "animated_icon_card",
+        });
         setCodeCopied(true);
         setTimeout(() => setCodeCopied(false), 2000);
       }
     } catch (error) {
       console.error("Failed to copy code:", error);
+      captureCopyFailure("component_code_copied", {
+        component_name: icon.slug,
+        surface: "animated_icon_card",
+      });
     } finally {
       setIsCopyingCode(false);
     }
@@ -47,14 +56,38 @@ export default function IconCard({ icon, isHoveredMode }: IconCardProps) {
   const handleCopyCli = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    await navigator.clipboard.writeText(cliCommand);
-    setCliCopied(true);
-    setTimeout(() => setCliCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(cliCommand);
+      captureEvent("cli_command_copied", {
+        component_name: icon.slug,
+        package_manager: "npm",
+        command_purpose: "add_component",
+        surface: "animated_icon_card",
+      });
+      setCliCopied(true);
+      setTimeout(() => setCliCopied(false), 2000);
+    } catch {
+      captureCopyFailure("cli_command_copied", {
+        component_name: icon.slug,
+        package_manager: "npm",
+        command_purpose: "add_component",
+        surface: "animated_icon_card",
+      });
+    }
   };
 
   return (
     <LazyMotion features={domAnimation}>
-      <Link href={icon.href} className="group block">
+      <Link
+        href={icon.href}
+        className="group block"
+        onClick={() =>
+          captureEvent("component_opened", {
+            component_name: icon.slug,
+            surface: "animated_icon_card",
+          })
+        }
+      >
         <m.div
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}

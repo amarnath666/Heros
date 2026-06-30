@@ -9,6 +9,7 @@ import PackageManagerSelector, {
 } from "@/components/ui/package-manager-selector";
 
 import { InstallationSectionProps } from "@/lib/types";
+import { captureEvent } from "@/lib/analytics";
 
 type InstallMethod = "cli" | "manual";
 
@@ -51,6 +52,26 @@ export default function InstallationSection({
   const cliCommand = getCliCommand(activePm, componentName);
   const manualCommand = getInstallCommand(activePm, dependencies);
 
+  const handleInstallMethodChange = (value: string) => {
+    const method = value as InstallMethod;
+    setInstallMethod(method);
+    captureEvent("installation_method_selected", {
+      component_name: componentName,
+      method,
+      surface: "component_installation",
+    });
+  };
+
+  const handlePackageManagerChange = (packageManager: PackageManager) => {
+    setActivePm(packageManager);
+    captureEvent("package_manager_selected", {
+      component_name: componentName,
+      package_manager: packageManager,
+      installation_method: installMethod,
+      surface: "component_installation",
+    });
+  };
+
   return (
     <div className="">
       <h2 className="text-2xl/7 md:text-3xl/7 tracking-tight text-black dark:text-white mb-4 font-semibold">
@@ -63,7 +84,7 @@ export default function InstallationSection({
         <AnimatedTabs
           layoutId="activeInstallMethod"
           activeTab={installMethod}
-          onTabChange={(val) => setInstallMethod(val as InstallMethod)}
+          onTabChange={handleInstallMethodChange}
           tabs={[
             { label: "CLI", value: "cli" },
             { label: "Manual", value: "manual" },
@@ -78,10 +99,19 @@ export default function InstallationSection({
               <div className="bg-[#171717] p-2 border-b border-white/15 flex items-center justify-between">
                 <PackageManagerSelector
                   activePm={activePm}
-                  onPmChange={setActivePm}
+                  onPmChange={handlePackageManagerChange}
                   layoutId="cliPmBackground"
                 />
-                <CopyButton text={cliCommand} />
+                <CopyButton
+                  text={cliCommand}
+                  analytics={{
+                    event: "cli_command_copied",
+                    component_name: componentName,
+                    package_manager: activePm,
+                    command_purpose: "add_component",
+                    surface: "component_installation",
+                  }}
+                />
               </div>
 
               {/* CLI Command */}
@@ -104,10 +134,19 @@ export default function InstallationSection({
                     <div className="bg-[#171717] p-2 flex items-center justify-between">
                       <PackageManagerSelector
                         activePm={activePm}
-                        onPmChange={setActivePm}
+                        onPmChange={handlePackageManagerChange}
                         layoutId="manualPmBackground"
                       />
-                      <CopyButton text={manualCommand} />
+                      <CopyButton
+                        text={manualCommand}
+                        analytics={{
+                          event: "dependency_command_copied",
+                          component_name: componentName,
+                          package_manager: activePm,
+                          command_purpose: "install_dependencies",
+                          surface: "component_installation",
+                        }}
+                      />
                     </div>
                     <div className="bg-[#0d0d0d] border-t border-white/15 p-4">
                       <code className="text-sm font-mono text-neutral-200">
@@ -130,6 +169,12 @@ export default function InstallationSection({
                   code={componentSource}
                   language="tsx"
                   filename={`${componentName}.tsx`}
+                  copyAnalytics={{
+                    event: "component_code_copied",
+                    component_name: componentName,
+                    surface: "component_installation",
+                    filename: `${componentName}.tsx`,
+                  }}
                 />
               </div>
             </div>

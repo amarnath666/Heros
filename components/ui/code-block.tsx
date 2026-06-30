@@ -5,12 +5,14 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import CopyButton from "@/components/ui/copy-button";
 import { cn } from "@/lib/utils";
+import type { CopyAnalytics } from "@/lib/analytics";
 
 interface CodeBlockProps {
   code: string;
   language?: string;
   filename?: string;
   className?: string;
+  copyAnalytics?: CopyAnalytics;
 }
 
 const COLLAPSED_HEIGHT = 600;
@@ -20,6 +22,7 @@ export default function CodeBlock({
   language = "tsx",
   filename,
   className,
+  copyAnalytics,
 }: CodeBlockProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -65,7 +68,16 @@ export default function CodeBlock({
             {language}
           </span>
           <div className="h-4 w-[1px] bg-white/10" />
-          <CopyButton text={code} />
+          <CopyButton
+            text={code}
+            analytics={
+              copyAnalytics ?? {
+                event: "code_snippet_copied",
+                surface: "code_block",
+                filename,
+              }
+            }
+          />
         </div>
       </div>
 

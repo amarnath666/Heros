@@ -1,4 +1,5 @@
 import React from "react";
+import type { CopyAnalytics } from "@/lib/analytics";
 
 export interface SidebarDataTypes {
   componentName: string;
@@ -30,6 +31,7 @@ export interface TabButtonTypes {
 
 export interface CopyProps {
   text: string;
+  analytics?: CopyAnalytics;
 }
 
 export interface Prop {
