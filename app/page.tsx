@@ -14,12 +14,16 @@ import VideoBentoGrid from "../components/ui/video-bento-grid";
 import { IconBrandGithub } from "@tabler/icons-react";
 import { PrimaryButton } from "@/components/ui/primary-button";
 
+import { Footer } from "./components/footer";
+import { FAQ } from "./components/faq";
+import { Reviews } from "./components/reviews";
+
 export default function Home() {
   return (
-    <div className="relative min-h-screen w-full dark:bg-black bg-white overflow-x-hidden flex flex-col max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+    <div className="relative min-h-screen w-full dark:bg-black bg-white overflow-x-hidden flex flex-col">
       <Header />
 
-      <div className="flex flex-col lg:flex-row justify-center mt-[100px] md:mt-[150px] mb-[30px] lg:mb-0 flex-1 z-10 relative w-full mx-auto gap-8 md:gap-12">
+      <div className="flex flex-col lg:flex-row justify-center mt-[100px] md:mt-[150px] mb-[30px] lg:mb-0 flex-1 z-10 relative w-full gap-8 md:gap-12 px-4 md:px-8 lg:px-12 max-w-[1440px] mx-auto">
         {/* Content Section */}
         <div className="flex flex-col items-start sm:items-center">
           {/* Mobile Static Heading */}
@@ -63,7 +67,19 @@ export default function Home() {
       </div>
 
       {/* Video Bento Grid */}
-      <VideoBentoGrid />
+      <div className="px-4 md:px-8 lg:px-12 max-w-[1440px] mx-auto w-full">
+        <VideoBentoGrid />
+      </div>
+
+      <div className="pt-10 md:pt-[175px]">
+        <Reviews />
+      </div>
+      <div className="pt-10 md:pt-[175px]">
+        <FAQ />
+      </div>
+      <div className="pt-10 md:pt-[175px]">
+        <Footer />
+      </div>
     </div>
   );
 }

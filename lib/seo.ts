@@ -8,6 +8,9 @@ export const DEFAULT_DESCRIPTION =
 
 const DEFAULT_KEYWORDS = [
   "Chamaac UI",
+  "Shaders",
+  "GLSL Shaders",
+  "Animated Backgrounds",
   "Shaders & UI Components",
   "React Shader Components",
   "GLSL Components",

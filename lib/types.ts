@@ -6,6 +6,7 @@ export interface SidebarDataTypes {
   category?: string;
   isNew?: boolean;
   isUpdated?: boolean;
+  isShader?: boolean;
 }
 
 export interface ViewAreaTypes {

@@ -147,7 +147,7 @@ function BentoCard({ item }: { item: BentoItem }) {
 
 export default function VideoBentoGrid() {
   return (
-    <section className="w-full py-0 md:py-[50px] ">
+    <section className="w-full py-0 md:pt-[50px] ">
       <div className="max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-12 h-full auto-rows-[180px] md:auto-rows-[200px] gap-4">
           {bentoItems.map((item) => (

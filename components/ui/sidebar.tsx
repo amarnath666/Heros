@@ -38,7 +38,7 @@ const Sidebar = () => {
                   {category}
                 </Link>
               ) : (
-                <h3 className="text-base/7 md:text-lg/7 font-semibold text-black dark:text-white ">
+                <h3 className="text-base/7 md:text-lg/7 uppercase font-semibold text-black dark:text-white ">
                   {category}
                 </h3>
               )}
@@ -89,8 +89,8 @@ const Sidebar = () => {
                         <Link
                           href={href}
                           className={cn(
-                            "cursor-pointer font-normal text-sm/5 flex flex-row items-center hover:text-black dark:hover:text-white hover:font-medium",
-                            `${isActive ? "text-black dark:text-white font-medium" : "text-text-secondary"}`
+                            "cursor-pointer font-medium uppercase text-sm/5 flex flex-row items-center hover:text-black dark:hover:text-white hover:font-medium",
+                            `${isActive ? "text-black dark:text-white " : "text-text-secondary"}`
                           )}
                         >
                           {item.componentName}

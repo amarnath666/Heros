@@ -23,44 +23,52 @@ export const sidebarData: SidebarDataTypes[] = [
     link: "/backgrounds/light-speed",
     category: "Backgrounds",
     isNew: true,
+    isShader: true,
   },
   {
     componentName: "Synthesis",
     link: "/backgrounds/synthesis",
     category: "Backgrounds",
     isNew: true,
+    isShader: true,
   },
   {
     componentName: "Electric Mist",
     link: "/backgrounds/electric-mist",
     category: "Backgrounds",
     isNew: true,
+    isShader: true,
   },
   {
     componentName: "Astral Flow",
     link: "/backgrounds/astral-flow",
     category: "Backgrounds",
+    isShader: true,
   },
   {
     componentName: "Nebula",
     link: "/backgrounds/nebula",
     category: "Backgrounds",
+    isShader: true,
   },
   {
     componentName: "Grid Bloom",
     link: "/backgrounds/grid-bloom",
     category: "Backgrounds",
+    isShader: true,
   },
   {
     componentName: "Liquid Chrome",
     link: "/backgrounds/liquid-chrome",
     category: "Backgrounds",
+    isShader: true,
   },
 
   {
     componentName: "Waves",
     link: "/backgrounds/waves",
     category: "Backgrounds",
+    isShader: true,
   },
   {
     componentName: "Interactive Grid",
@@ -177,6 +185,7 @@ interface ComponentCardType {
   link: string;
   category: string;
   bgColor?: string;
+  isShader?: boolean;
 }
 
 export const componentCards: ComponentCardType[] = [
@@ -189,6 +198,7 @@ export const componentCards: ComponentCardType[] = [
     link: "/components/backgrounds/light-speed",
     category: "Backgrounds",
     bgColor: "bg-black dark:bg-black",
+    isShader: true,
   },
   {
     title: "Synthesis",
@@ -199,6 +209,7 @@ export const componentCards: ComponentCardType[] = [
     link: "/components/backgrounds/synthesis",
     category: "Backgrounds",
     bgColor: "bg-black dark:bg-black",
+    isShader: true,
   },
   {
     title: "Electric Mist",
@@ -209,6 +220,7 @@ export const componentCards: ComponentCardType[] = [
     link: "/components/backgrounds/electric-mist",
     category: "Backgrounds",
     bgColor: "bg-black dark:bg-black",
+    isShader: true,
   },
   {
     title: "Astral Flow",
@@ -219,6 +231,7 @@ export const componentCards: ComponentCardType[] = [
     link: "/components/backgrounds/astral-flow",
     category: "Backgrounds",
     bgColor: "bg-black dark:bg-black",
+    isShader: true,
   },
   {
     title: "Nebula",
@@ -228,6 +241,7 @@ export const componentCards: ComponentCardType[] = [
     link: "/components/backgrounds/nebula",
     category: "Backgrounds",
     bgColor: "bg-black dark:bg-black",
+    isShader: true,
   },
   // {
   //   title: "Deform Tunnel",
@@ -245,6 +259,7 @@ export const componentCards: ComponentCardType[] = [
     link: "/components/backgrounds/grid-bloom",
     category: "Backgrounds",
     bgColor: "bg-black dark:bg-black",
+    isShader: true,
   },
   {
     title: "Liquid Chrome",
@@ -254,6 +269,7 @@ export const componentCards: ComponentCardType[] = [
     link: "/components/backgrounds/liquid-chrome",
     category: "Backgrounds",
     bgColor: "bg-black dark:bg-black",
+    isShader: true,
   },
   {
     title: "Waves",
@@ -264,6 +280,7 @@ export const componentCards: ComponentCardType[] = [
     link: "/components/backgrounds/waves",
     category: "Backgrounds",
     bgColor: "bg-black dark:bg-black",
+    isShader: true,
   },
   {
     title: "Animated Icons",
@@ -313,15 +330,6 @@ export const componentCards: ComponentCardType[] = [
     link: "/components/backgrounds/interactive-grid",
     category: "Backgrounds",
     bgColor: "bg-black dark:bg-black",
-  },
-  {
-    title: "Emissive Dot Grid",
-    description:
-      "A stunning emissive dot grid background with noise-driven scaling and customizable hex colors.",
-    imagePath: "/components/backgrounds/emissive-dot-grid.png",
-    link: "/components/backgrounds/emissive-dot-grid",
-    category: "Backgrounds",
-    bgColor: "bg-[#120200] dark:bg-[#120200]",
   },
 
   {
